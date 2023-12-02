@@ -62,3 +62,29 @@ let part1 =
     |> Seq.sum
 
 part1 |> printfn "Part one: %A"
+
+let fewestPossibleCubes (game: Game) =
+    let reds =
+        game.Rounds
+        |> Seq.map (fun r -> r.Red)
+        |> Seq.sortByDescending (fun x -> x)
+        |> Seq.head
+    let greens =
+        game.Rounds
+        |> Seq.map (fun r -> r.Green)
+        |> Seq.sortByDescending (fun x -> x)
+        |> Seq.head
+    let blues =
+        game.Rounds
+        |> Seq.map (fun r -> r.Blue)
+        |> Seq.sortByDescending (fun x -> x)
+        |> Seq.head
+    reds * greens * blues
+
+let part2 =
+    input
+    |> Seq.map toGames
+    |> Seq.map fewestPossibleCubes
+    |> Seq.sum
+
+part2 |> printfn "Part two: %A"
