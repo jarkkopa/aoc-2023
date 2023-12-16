@@ -28,6 +28,14 @@ let rec extrapolateLast (values: int list list) =
         extrapolateLast ([newNext] @ tail)
     | _ -> values |> List.collect id
 
+let rec extrapolateFirst (values: int list list) =
+    match values with
+    | head :: next :: tail ->
+        let addValue =  (next |> List.head) - (head |> List.head)
+        let newNext = [addValue] @ next
+        extrapolateFirst ([newNext] @ tail)
+    | _ -> values |> List.collect id
+
 let part1 =
     histories
     |> List.map (fun h -> toDiffs [h] h)
@@ -35,3 +43,11 @@ let part1 =
     |> List.sum
 
 part1 |> printfn "Part one: %A"
+
+let part2 =
+    histories
+    |> List.map (fun h -> toDiffs [h] h)
+    |> List.map (extrapolateFirst >> List.head)
+    |> List.sum
+
+part2 |> printfn "Part two: %A"
